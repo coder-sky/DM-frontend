@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: process.env.REACT_APP_BACKEND_SERVER,
+      target: 'https://dm-backend-4sss.onrender.com',
       changeOrigin: true,
     })
   );
