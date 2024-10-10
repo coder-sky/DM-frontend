@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
 import LoadingButton from '@mui/lab/LoadingButton'
 import swal from 'sweetalert'
+import instance from '../../api/axiosInstance'
 
 function ForgotPassword() {
   const [forgotPasswordFields, setForgotPasswordFields] = useState({username:'',email:''})
@@ -27,7 +28,7 @@ function ForgotPassword() {
       //console.log(email)
       setLoadSubmit(true)
       try {
-        const result = await axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/forgotpassword', forgotPasswordFields)
+        const result = await instance.post('/api/forgotpassword', forgotPasswordFields)
         //console.log(result)
       
         swal({

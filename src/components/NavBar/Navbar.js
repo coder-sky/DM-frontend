@@ -15,6 +15,7 @@ import UserContext from '../Context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import instance from '../../api/axiosInstance';
 // import AdbIcon from '@mui/icons-material/Adb';
 
 const pages = ['Home','Client Form', 'Client Details', 'Campaign Form', 'Campaign Details', 'Report Form', 'Report Details'];
@@ -32,7 +33,7 @@ function Navbar() {
       navigate(path)
     }
     const handleLogout = ()=>{
-      axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/logout')
+      instance.get('/api/logout')
       .then(res=>{
         //console.log(res.data)
         swal({

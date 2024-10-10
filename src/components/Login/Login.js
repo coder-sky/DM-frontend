@@ -44,7 +44,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import swal from 'sweetalert';
 import Cookies from 'js-cookie'
 import UserContext from '../Context/UserContext';
-//import instance from '../../api/axiosInstance';
+import instance from '../../api/axiosInstance';
+
 
 const Login = () => {
   const [fields, setFields] = useState({ username: '', password: '' })
@@ -83,7 +84,7 @@ const Login = () => {
     e.preventDefault()
     
     setLoadingButton(true)
-    axios.post('https://dm-backend-4sss.onrender.com/api/login', fields,{withCredentials:true}
+    instance.post('/api/login', fields,{withCredentials:true}
       )
       .then(res => {
         handleUserDetails(res.data)
@@ -92,6 +93,7 @@ const Login = () => {
 
       })
       .catch((err)=>{
+        console.log(err)
         setLoadingButton(false)
         swal({
           title:err.response.data,
