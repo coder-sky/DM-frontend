@@ -62,12 +62,12 @@ function ReportDetails() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await axios.get('/api/reports')
+                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/reports')
                 //console.log(res.data)
                 const data = res.data.data.map(data => ({ ...data, date: new Date(data.date).toLocaleString('en-CA').slice(0, 10), start_date: new Date(data.start_date).toLocaleString('en-CA').slice(0, 10), end_date: new Date(data.end_date).toLocaleString('en-CA').slice(0, 10) }))
                 setReportData({ ...res.data, data: data })
                 setFiltedReportData(data)
-                const result = await axios.get('/api/clientdetails')
+                const result = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/clientdetails')
                 //console.log(res.data)
                 const dataCli = result.data.map(data => ({ id: data.id, clientName: data.client_name }))
                 dataCli.unshift({ id: 1, clientName: 'All' })
@@ -100,7 +100,7 @@ function ReportDetails() {
             .then((willDelete) => {
                 if (willDelete) {
                     //console.log(row)
-                    axios.delete('/api/deletecampaignrecord/', { params: { id: row.id, camp_id: row.camp_id } })
+                    axios.delete(process.env.REACT_APP_BACKEND_SERVER+'/api/deletecampaignrecord/', { params: { id: row.id, camp_id: row.camp_id } })
                         .then(res => {
                             setUpdate(prev => prev + 1)
                             swal(res.data, {
@@ -224,12 +224,12 @@ function ReportDetails() {
                 setLoadButton(true)
                 try {
                     //console.log('edit', editFields)
-                    const res = await axios.put('/api/editcampaignreport', editFields)
+                    const res = await axios.put(process.env.REACT_APP_BACKEND_SERVER+'/api/editcampaignreport', editFields)
                     //console.log(res.data)
                     setLoadButton(false)
                     handleClose()
                     if (searchFields.campaignName !== null && searchFields.clientName !== null) {
-                        const res = await axios.get(`/api/searchreports/`, { params: searchFields })
+                        const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+`/api/searchreports/`, { params: searchFields })
                         if (res.data.info !== undefined) {
                             setCampaignInfo(res.data.info)
                             //console.log(res.data.info,'done')
@@ -524,7 +524,7 @@ function ReportDetails() {
             } else {
                 try {
                     setLoader(true)
-                    const res = await axios.get('/api/campaigns/' + id)
+                    const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/campaigns/' + id)
                     //console.log(res.data)
                     //setCampaignData(res.data)
                     const data = res.data.map(data => ({ campaignName: data.campaign_name, campId: data.camp_id }))
@@ -560,7 +560,7 @@ function ReportDetails() {
         e.preventDefault()
         try {
             setLoader(true)
-            const res = await axios.get(`/api/searchreports/`, { params: searchFields })
+            const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+`/api/searchreports/`, { params: searchFields })
             //console.log(res.data,res.data.info!==undefined)
 
             if (res.data.info !== undefined) {

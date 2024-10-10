@@ -27,7 +27,7 @@ function ForgotPassword() {
       //console.log(email)
       setLoadSubmit(true)
       try {
-        const result = await axios.post('/api/forgotpassword', forgotPasswordFields)
+        const result = await axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/forgotpassword', forgotPasswordFields)
         //console.log(result)
       
         swal({
@@ -120,7 +120,7 @@ function ForgotPassword() {
       e.preventDefault()
       setLoadSubmit(true)
       try{
-        await axios.post('/api/verifycode', { ...forgotPasswordFields, ref:otpRef, clientOtp:clientOtp })
+        await axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/verifycode', { ...forgotPasswordFields, ref:otpRef, clientOtp:clientOtp })
         setActiveView(2)
         //console.log(result)
         setLoadSubmit(false)
@@ -206,7 +206,7 @@ function ForgotPassword() {
 
         //console.log(email, password)
         try {
-          const result = await axios.put('/api/resetpassword', { ...forgotPasswordFields, password: password.confirmPass })
+          const result = await axios.put(process.env.REACT_APP_BACKEND_SERVER+'/api/resetpassword', { ...forgotPasswordFields, password: password.confirmPass })
           swal({
             title: "Succeed",
             text: result.data,

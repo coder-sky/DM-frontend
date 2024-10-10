@@ -24,7 +24,7 @@ function ClientAdminDashBoard() {
         const getData = async() =>{
             try {
                 setLoader(true)
-                const res = await axios.get('/api/clientdashboard-admin', { params: params })
+                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/clientdashboard-admin', { params: params })
                 //console.log(res.data)
                 // setSearchFields({ campaign_name: res.data.selectedCamp })
                 // res.data.selectedCamp && setSelectedCamp(res.data.selectedCamp.campaign_name)

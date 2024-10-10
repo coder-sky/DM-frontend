@@ -32,7 +32,7 @@ function Navbar() {
       navigate(path)
     }
     const handleLogout = ()=>{
-      axios.get('/api/logout')
+      axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/logout')
       .then(res=>{
         //console.log(res.data)
         swal({

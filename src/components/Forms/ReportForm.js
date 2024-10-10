@@ -26,7 +26,7 @@ function ReportForm() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await axios.get('/api/clientdetails')
+                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/clientdetails')
                 //console.log(res.data)
                 const data = res.data.map(data => ({ id: data.id, clientName: data.client_name }))
                 setClientData(data)
@@ -54,7 +54,7 @@ function ReportForm() {
             const { id } = newValue
             try {
                 setLoader(true)
-                const res = await axios.get('/api/campaigns/' + id)
+                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/campaigns/' + id)
                 //console.log(res.data)
                 setCampaignData(res.data)
                 const data = res.data.map(data => ({ campaignName: data.campaign_name, campId: data.camp_id }))
@@ -179,7 +179,7 @@ function ReportForm() {
         e.preventDefault()
         //console.log(fields)
         setLoadButton(true)
-        axios.post('/api/addreport', fields)
+        axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/addreport', fields)
             .then(res => {
                 handleClear()
                 setLoadButton(false)

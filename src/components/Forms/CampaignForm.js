@@ -18,7 +18,7 @@ function CampaignForm() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await axios.get('/api/clientdetails')
+                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/clientdetails')
                 //console.log(res.data)
                 const data = res.data.map(data => ({ id: data.id, clientName: data.client_name }))
                 setClientData(data)
@@ -121,7 +121,7 @@ function CampaignForm() {
         else {
             setLoadButton(true)
             try {
-                const res = await axios.post('/api/addcampaign', fields)
+                const res = await axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/addcampaign', fields)
                 //console.log(res.data)
                 setLoadButton(false)
                 swal({

@@ -57,7 +57,7 @@ function ClientForm() {
         e.preventDefault()
         //console.log(fields)
         handleLoadButton(true)
-        axios.post('/api/addclientdetails', fields)
+        axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/addclientdetails', fields)
             .then(res => {
                 handleClear()
                 handleLoadButton(false)

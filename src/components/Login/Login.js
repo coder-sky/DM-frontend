@@ -44,6 +44,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import swal from 'sweetalert';
 import Cookies from 'js-cookie'
 import UserContext from '../Context/UserContext';
+import instance from '../../api/axiosInstance';
 
 const Login = () => {
   const [fields, setFields] = useState({ username: '', password: '' })
@@ -72,16 +73,21 @@ const Login = () => {
       </Cloud>
     )
   }, [])
+  //console.log(Cookies.get('ssid'))
   if (Cookies.get('ssid') !== undefined) {
+    
     return <Navigate to="/home" replace={true} />;
   }
 
   const handleLogin = (e) => {
     e.preventDefault()
+    
     setLoadingButton(true)
-    axios.post('/api/login', fields)
+    axios.post('/api/login', fields,{withCredentials:true}
+      )
       .then(res => {
         handleUserDetails(res.data)
+        console.log(res.data)
         navigate('/home')
 
       })

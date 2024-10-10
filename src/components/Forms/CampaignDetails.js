@@ -39,7 +39,7 @@ function CampaignDetails() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await axios.get('/api/campaigndetails')
+                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/campaigndetails')
                 //console.log(res.data)
                 const data = res.data.map(data => ({ ...data, start_date: new Date(data.start_date).toLocaleString('en-CA').slice(0, 10), end_date: new Date(data.end_date).toLocaleString('en-CA').slice(0, 10) }))
                 setCampaignData(data)
@@ -72,7 +72,7 @@ function CampaignDetails() {
             .then((willDelete) => {
                 if (willDelete) {
                     //console.log(row)
-                    axios.delete('/api/deletecampaign/' + row.camp_id)
+                    axios.delete(process.env.REACT_APP_BACKEND_SERVER+'/api/deletecampaign/' + row.camp_id)
                         .then(res => {
                             setUpdate(prev => prev + 1)
                             swal(res.data, {
@@ -192,7 +192,7 @@ function CampaignDetails() {
                 if (JSON.stringify(prevEditFields) !== JSON.stringify(editFields)) {
                     setLoadButton(true)
                     try {
-                        const res = await axios.put('/api/editcampaign', editFields)
+                        const res = await axios.put(process.env.REACT_APP_BACKEND_SERVER+'/api/editcampaign', editFields)
                         console.log(res.data)
                         setLoadButton(false)
                         handleClose()

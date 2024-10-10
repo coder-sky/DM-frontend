@@ -53,7 +53,7 @@ function ClientDetails() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await axios.get('/api/clientdetails')
+                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/clientdetails')
                 //console.log(res.data)
                 const data = res.data.map(data => ({ ...data, date_of_joining: new Date(data.date_of_joining).toLocaleString('en-CA').slice(0, 10) }))
                 setClientData(data)
@@ -91,7 +91,7 @@ function ClientDetails() {
             .then((willDelete) => {
                 if (willDelete) {
                     console.log(row)
-                    axios.post('/api/deleteclient', row)
+                    axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/deleteclient', row)
                         .then(res => {
                             setUpdate(prev => prev + 1)
                             swal(res.data, {
@@ -155,7 +155,7 @@ function ClientDetails() {
             if(JSON.stringify(prevEditFields)!==JSON.stringify(editFields)){
                 setLoadButton(true)
                 try{
-                    const res = await axios.put('/api/editclient', {newData:editFields,prevData:prevEditFields})
+                    const res = await axios.put(process.env.REACT_APP_BACKEND_SERVER+'/api/editclient', {newData:editFields,prevData:prevEditFields})
                     console.log(res.data)
                     setLoadButton(false)
                     setOpen(false)

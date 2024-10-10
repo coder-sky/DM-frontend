@@ -32,7 +32,7 @@ function ClientDashboard() {
         const getData = async () => {
             try {
                 setLoader(true)
-                const res = await axios.get('/api/clientdashboard', { params: { client_id: userDetails.id } })
+                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/clientdashboard', { params: { client_id: userDetails.id } })
                 //console.log(res.data)
                 setSearchFields({ campaign_name: res.data.selectedCamp })
                 res.data.selectedCamp && setSelectedCamp(res.data.selectedCamp.campaign_name)
@@ -63,7 +63,7 @@ function ClientDashboard() {
 
 
     const handleLogout = () => {
-        axios.get('/api/logout')
+        axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/logout')
             .then(res => {
                 //console.log(res.data)
                 swal({
@@ -192,7 +192,7 @@ function ClientDashboard() {
     const handleSearch = async(e)=>{
         e.preventDefault()
         try {
-            const res = await axios.get('/api/searchcampaign', { params: searchFields })
+            const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/searchcampaign', { params: searchFields })
             //console.log(res.data)
             
             setSelectedCamp(searchFields.campaign_name.campaign_name)
@@ -213,7 +213,7 @@ function ClientDashboard() {
         if(newValue){
             try {
                 setLoader(true)
-                const res = await axios.get('/api/campaigninfo', { params: {client_id:userDetails.id, campaign:newValue} })
+                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/campaigninfo', { params: {client_id:userDetails.id, campaign:newValue} })
                 console.log(res.data)
                 
                 setSelectedCamp(res.data.selectedCamp)

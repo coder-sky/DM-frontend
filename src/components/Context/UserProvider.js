@@ -14,7 +14,7 @@ function UserProvider(props) {
   useEffect(() => {
 
     if (Cookies.get('ssid') !== undefined ) {
-      axios.get('/api/checkuser')
+      axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/checkuser')
         .then(res => { 
           //console.log(res.data)         
           setUserDetails(res.data)
