@@ -74,6 +74,12 @@ const Login = () => {
       </Cloud>
     )
   }, [])
+  const token = document.cookie
+  .split('; ')
+  .find(row => row.startsWith('ssid='))
+  ?.split('=')[1];
+
+console.log('token',token); // Should log your JWT token
   console.log(Cookies.get('ssid'),process.env.REACT_APP_BACKEND_SERVER )
   if (Cookies.get('ssid') !== undefined) {
     
