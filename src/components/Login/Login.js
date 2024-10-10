@@ -73,7 +73,7 @@ const Login = () => {
       </Cloud>
     )
   }, [])
-  //console.log(Cookies.get('ssid'))
+  console.log(Cookies.get('ssid'),process.env.REACT_APP_BACKEND_SERVER )
   if (Cookies.get('ssid') !== undefined) {
     
     return <Navigate to="/home" replace={true} />;
@@ -83,7 +83,7 @@ const Login = () => {
     e.preventDefault()
     
     setLoadingButton(true)
-    axios.post('/api/login', fields,{withCredentials:true}
+    axios.post('https://dm-backend-4sss.onrender.com/api/login', fields,{withCredentials:true}
       )
       .then(res => {
         handleUserDetails(res.data)
