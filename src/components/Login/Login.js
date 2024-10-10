@@ -84,9 +84,10 @@ const Login = () => {
     e.preventDefault()
     
     setLoadingButton(true)
-    instance.post('/api/login', fields,{withCredentials:true}
+    instance.post('/api/login', fields,
       )
       .then(res => {
+        console.log(res)
         handleUserDetails(res.data)
         console.log(res.data)
         navigate('/home')
