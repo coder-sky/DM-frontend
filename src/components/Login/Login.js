@@ -45,6 +45,7 @@ import swal from 'sweetalert';
 import Cookies from 'js-cookie'
 import UserContext from '../Context/UserContext';
 import instance from '../../api/axiosInstance';
+import axios from 'axios';
 
 
 const Login = () => {
@@ -90,7 +91,7 @@ console.log('token',token); // Should log your JWT token
     e.preventDefault()
     
     setLoadingButton(true)
-    instance.post('/api/login', fields,
+    axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/login', fields,{withCredentials:true}
       )
       .then(res => {
         console.log(res)
