@@ -44,7 +44,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import swal from 'sweetalert';
 import Cookies from 'js-cookie'
 import UserContext from '../Context/UserContext';
-import instance from '../../api/axiosInstance';
+//import instance from '../../api/axiosInstance';
 
 const Login = () => {
   const [fields, setFields] = useState({ username: '', password: '' })
