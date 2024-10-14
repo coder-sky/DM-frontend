@@ -1,6 +1,5 @@
 import { ArrowBack, LockReset, Visibility, VisibilityOff } from '@mui/icons-material'
 import { Box,  Fade, FormControl, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, Stack, Typography, } from '@mui/material'
-import axios from 'axios'
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
@@ -25,11 +24,10 @@ function ForgotPassword() {
 
     const handleForgotPassword = async (e) => {
       e.preventDefault()
-      //console.log(email)
       setLoadSubmit(true)
       try {
         const result = await instance.post('/api/forgotpassword', forgotPasswordFields)
-        //console.log(result)
+        // console.log(result)
       
         swal({
           title: "Succeed",
@@ -45,7 +43,7 @@ function ForgotPassword() {
 
       }
       catch (err) {
-        //console.log(err)
+        // console.log(err)
         setLoadSubmit(false)
         //toast.error(err.response.data)
         swal({
@@ -121,11 +119,9 @@ function ForgotPassword() {
       e.preventDefault()
       setLoadSubmit(true)
       try{
-        await axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/verifycode', { ...forgotPasswordFields, ref:otpRef, clientOtp:clientOtp })
+        await instance.post('/api/verifycode', { ...forgotPasswordFields, ref:otpRef, clientOtp:clientOtp })
         setActiveView(2)
-        //console.log(result)
         setLoadSubmit(false)
-
       }
       catch(err){
         setLoadSubmit(false)
@@ -133,7 +129,6 @@ function ForgotPassword() {
           title: "Error Occured!",
           text: err.response.data,
           icon: "error",
-          
         });
       }
   
@@ -204,10 +199,8 @@ function ForgotPassword() {
       }
       else {
         setLoadReset(true)
-
-        //console.log(email, password)
         try {
-          const result = await axios.put(process.env.REACT_APP_BACKEND_SERVER+'/api/resetpassword', { ...forgotPasswordFields, password: password.confirmPass })
+          const result = await instance.put('/api/resetpassword', { ...forgotPasswordFields, password: password.confirmPass })
           swal({
             title: "Succeed",
             text: result.data,
@@ -224,7 +217,7 @@ function ForgotPassword() {
 
         }
         catch (err) {
-          //console.log(err)
+          // console.log(err)
           setLoadReset(false)
           swal({
             title: "Error Occured!",

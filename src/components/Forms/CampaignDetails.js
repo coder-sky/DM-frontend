@@ -4,10 +4,10 @@ import Navbar from '../NavBar/Navbar'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import swal from 'sweetalert';
-import axios from 'axios';
 import {Search } from '@mui/icons-material';
 import Loader from '../Loader';
 import LoadingButton from '@mui/lab/LoadingButton';
+import instance from '../../api/axiosInstance';
 
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -39,8 +39,8 @@ function CampaignDetails() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/campaigndetails')
-                //console.log(res.data)
+                const res = await instance.get('/api/campaigndetails')
+                // console.log(res.data)
                 const data = res.data.map(data => ({ ...data, start_date: new Date(data.start_date).toLocaleString('en-CA').slice(0, 10), end_date: new Date(data.end_date).toLocaleString('en-CA').slice(0, 10) }))
                 setCampaignData(data)
                 setFilterdCampaignData(data)
@@ -71,8 +71,8 @@ function CampaignDetails() {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    //console.log(row)
-                    axios.delete(process.env.REACT_APP_BACKEND_SERVER+'/api/deletecampaign/' + row.camp_id)
+                    // console.log(row)
+                    instance.delete('/api/deletecampaign/' + row.camp_id)
                         .then(res => {
                             setUpdate(prev => prev + 1)
                             swal(res.data, {
@@ -127,7 +127,7 @@ function CampaignDetails() {
         const handleEditFieldsChange = (e) => {
             setEditFields({ ...editFields, [e.target.name]: e.target.value })
             let field, cal, ctrPer;
-            //console.log(e.target.name)
+            // console.log(e.target.name)
             const val = e.target.value === '' ? 0 : e.target.value
             if (e.target.name === 'planned_impressions') {
                 field = 'planned_budget_impressions'
@@ -144,7 +144,7 @@ function CampaignDetails() {
             if (e.target.name === 'planned_cpm') {
                 field = 'planned_budget_impressions'
                 cal = ((editFields.planned_impressions * val) / 1000).toFixed(2)
-                //console.log(field,cal,e.target.value)
+                // console.log(field,cal,e.target.value)
             }
             if (e.target.name === 'planned_clicks') {
                 field = 'planned_budget_clicks'
@@ -184,7 +184,7 @@ function CampaignDetails() {
 
         const handleSubmit = async (e) => {
             e.preventDefault()
-            //console.log(editFields.camp_based_on.length===0)
+            // console.log(editFields.camp_based_on.length===0)
             if(editFields.camp_based_on.length===0){
                 setCampaignSelectionError(true)
             }
@@ -192,8 +192,8 @@ function CampaignDetails() {
                 if (JSON.stringify(prevEditFields) !== JSON.stringify(editFields)) {
                     setLoadButton(true)
                     try {
-                        const res = await axios.put(process.env.REACT_APP_BACKEND_SERVER+'/api/editcampaign', editFields)
-                        console.log(res.data)
+                        const res = await instance.put('/api/editcampaign', editFields)
+                        // console.log(res.data)
                         setLoadButton(false)
                         handleClose()
                         setUpdate(prev => prev + 1)
@@ -212,7 +212,7 @@ function CampaignDetails() {
                             icon: 'error'
                         })
                     }
-                    //console.log(editFields)
+                    // console.log(editFields)
                 }
 
             }
@@ -293,9 +293,8 @@ function CampaignDetails() {
 
 
                                                 if (val === 'impressions') {
-                                                    console.log(editFields.selected_camp_opt)
+                                                    // console.log(editFields.selected_camp_opt)
                                                     selectedOpt = editFields.selected_camp_opt.filter(opt => opt !== 'impressions' && opt !== 'cpm')
-                                                    //console.log(fields.selectedCampOptions, selectedOpt)
                                                     clientOpt = editFields.client_camp_access.filter(opt => !['impressions', 'cpm', 'total_cpm'].includes(opt))
                                                     planned_impressions = 0;
                                                     planned_cpm = 0;
@@ -321,7 +320,7 @@ function CampaignDetails() {
 
 
                                                 }
-                                                console.log(val, selectedOpt, clientOpt)
+                                                // console.log(val, selectedOpt, clientOpt)
                                                 //setFields({ ...fields, selectedCampOptions: selectedOpt, clientReportAccess:clientOpt })
 
 
@@ -330,7 +329,7 @@ function CampaignDetails() {
 
                                                 newBasedValues = [...editFields.camp_based_on, val]
                                             }
-                                            //console.log(newBasedValues)
+                                            // console.log(newBasedValues)
                                             setCampaignSelectionError(false)
                                             setEditFields({ ...editFields, camp_based_on: newBasedValues, selected_camp_opt: selectedOpt, client_camp_access: clientOpt, planned_impressions: planned_impressions, planned_cpm: planned_cpm, planned_clicks: planned_clicks, planned_cpc: planned_cpc, planned_sessions: planned_sessions, planned_cps: planned_cps, planned_budget_impressions: planned_budget_impressions, planned_budget_clicks: planned_budget_clicks, planned_budget_sessions: planned_budget_sessions, ctr: ctr })
 
@@ -562,7 +561,7 @@ function CampaignDetails() {
                                             <legend>Client Report Access</legend>
                                             <FormControl fullWidth>
                                                 <FormGroup row onChange={e => {
-                                                    //console.log(e.target.value)
+                                                    // console.log(e.target.value)
                                                     const val = e.target.value
                                                     let newBasedValues;
                                                     if (editFields.client_camp_access.includes(val)) {

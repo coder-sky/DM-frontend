@@ -39,13 +39,11 @@ import { motion } from "framer-motion"
 import { Box, Button, Container, Grid, IconButton, Paper, Stack, TextField, Typography } from '@mui/material';
 import { LinearGradient } from 'react-text-gradients'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-//import axios from 'axios'
 import LoadingButton from '@mui/lab/LoadingButton';
 import swal from 'sweetalert';
 import Cookies from 'js-cookie'
 import UserContext from '../Context/UserContext';
 import instance from '../../api/axiosInstance';
-import axios from 'axios';
 
 
 const Login = () => {
@@ -80,8 +78,8 @@ const Login = () => {
   .find(row => row.startsWith('ssid='))
   ?.split('=')[1];
 
-console.log('token',token); // Should log your JWT token
-  console.log(Cookies.get('ssid'),process.env.REACT_APP_BACKEND_SERVER )
+// console.log('token',token); // Should log your JWT token
+  // console.log(Cookies.get('ssid'),process.env.REACT_APP_BACKEND_SERVER )
   if (Cookies.get('ssid') !== undefined) {
     
     return <Navigate to="/home" replace={true} />;
@@ -91,17 +89,18 @@ console.log('token',token); // Should log your JWT token
     e.preventDefault()
     
     setLoadingButton(true)
-    axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/login', fields,{withCredentials:true}
+    instance.post('/api/login', fields,{withCredentials:true}
       )
       .then(res => {
-        console.log(res)
-        handleUserDetails(res.data)
-        console.log(res.data)
+        // console.log(res)
+        handleUserDetails()
+        // console.log(res.data)
+        Cookies.set('ssid', res.data)
         navigate('/home')
 
       })
       .catch((err)=>{
-        console.log(err)
+        // console.log(err)
         setLoadingButton(false)
         swal({
           title:err.response.data,

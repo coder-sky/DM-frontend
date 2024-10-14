@@ -1,10 +1,10 @@
 import { Autocomplete, Box, Button, Checkbox, Collapse, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Paper, Stack, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Navbar from '../NavBar/Navbar'
-import axios from 'axios';
 import swal from 'sweetalert';
 import Loader from '../Loader';
 import LoadingButton from '@mui/lab/LoadingButton';
+import instance from '../../api/axiosInstance';
 
 function CampaignForm() {
     const [inputValue, setInputValue] = useState('');
@@ -18,8 +18,8 @@ function CampaignForm() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/clientdetails')
-                //console.log(res.data)
+                const res = await instance.get('/api/clientdetails')
+                // console.log(res.data)
                 const data = res.data.map(data => ({ id: data.id, clientName: data.client_name }))
                 setClientData(data)
                 //setFilterdClientData(data)
@@ -55,7 +55,7 @@ function CampaignForm() {
     const handleFieldsChange = (e) => {
         setFields({ ...fields, [e.target.name]: e.target.value })
         let field, cal, ctrPer;
-        //console.log(e.target.name)
+        // console.log(e.target.name)
         const val = e.target.value === '' ? 0 : e.target.value
         if (e.target.name === 'plannedImpressions') {
             field = 'plannedBudgetImpressions'
@@ -72,7 +72,7 @@ function CampaignForm() {
         if (e.target.name === 'plannedCPM') {
             field = 'plannedBudgetImpressions'
             cal = ((fields.plannedImpressions * val) / 1000).toFixed(2)
-            //console.log(field,cal,e.target.value)
+            // console.log(field,cal,e.target.value)
         }
         if (e.target.name === 'plannedClicks') {
             field = 'plannedBudgetClicks'
@@ -121,8 +121,8 @@ function CampaignForm() {
         else {
             setLoadButton(true)
             try {
-                const res = await axios.post(process.env.REACT_APP_BACKEND_SERVER+'/api/addcampaign', fields)
-                //console.log(res.data)
+                const res = await instance.post('/api/addcampaign', fields)
+                // console.log(res.data)
                 setLoadButton(false)
                 swal({
                     title: 'Success',
@@ -165,7 +165,7 @@ function CampaignForm() {
                                     }}
                                     value={fields.clientName}
                                     onChange={(_, newValue) => {
-                                        //console.log(newValue)
+                                        // console.log(newValue)
                                         setFields({ ...fields, clientName: newValue })
                                     }}
                                 />
@@ -233,9 +233,9 @@ function CampaignForm() {
 
 
                                                     if (val === 'impressions') {
-                                                        console.log(fields.selectedCampOptions)
+                                                        // console.log(fields.selectedCampOptions)
                                                         selectedOpt = fields.selectedCampOptions.filter(opt => opt !== 'impressions' && opt !== 'cpm')
-                                                        //console.log(fields.selectedCampOptions, selectedOpt)
+                                                        // console.log(fields.selectedCampOptions, selectedOpt)
                                                         clientOpt = fields.clientReportAccess.filter(opt => !['impressions', 'cpm', 'total_cpm'].includes(opt))
                                                         pl_impr = 0;
                                                         pl_cpm = 0;
@@ -261,7 +261,7 @@ function CampaignForm() {
 
 
                                                     }
-                                                    console.log(val, selectedOpt, clientOpt)
+                                                    // console.log(val, selectedOpt, clientOpt)
                                                     //setFields({ ...fields, selectedCampOptions: selectedOpt, clientReportAccess:clientOpt })
 
 
@@ -270,7 +270,7 @@ function CampaignForm() {
 
                                                     newBasedValues = [...fields.campaignBasedOn, val]
                                                 }
-                                                //console.log(newBasedValues)
+                                                // console.log(newBasedValues)
                                                 setCampaignSelectionError(false)
                                                 setFields({ ...fields, campaignBasedOn: newBasedValues, selectedCampOptions: selectedOpt, clientReportAccess: clientOpt, plannedImpressions: pl_impr, plannedCPM: pl_cpm, plannedClicks: pl_cli, plannedCPC: pl_cpc, plannedSessions: pl_ses, plannedCPS: pl_cps, plannedBudgetImpressions: plannedBudgetImpressions, plannedBudgetClicks: plannedBudgetClicks, plannedBudgetSessions: plannedBudgetSessions, ctr: ctr })
 
@@ -502,7 +502,7 @@ function CampaignForm() {
                                                 <legend>Client Report Access</legend>
                                                 <FormControl fullWidth>
                                                     <FormGroup row onChange={e => {
-                                                        //console.log(e.target.value)
+                                                        // console.log(e.target.value)
                                                         const val = e.target.value
                                                         let newBasedValues;
                                                         if (fields.clientReportAccess.includes(val)) {

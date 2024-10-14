@@ -1,8 +1,7 @@
-import {  Logout } from '@mui/icons-material';
-import { AppBar,  Button, Container, Grid,  Paper, Toolbar,  Typography, Box, Stack, TextField, Autocomplete, } from '@mui/material'
+import { Logout } from '@mui/icons-material';
+import { AppBar, Button, Container, Grid, Paper, Toolbar, Typography, Box, Stack, TextField, Autocomplete, } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import { TypeAnimation } from 'react-type-animation';
-import axios from 'axios';
 import swal from 'sweetalert';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie'
@@ -14,6 +13,7 @@ import { motion } from "framer-motion"
 import CountUp from 'react-countup';
 import Chart from "react-apexcharts";
 import Loader from '../Loader';
+import instance from '../../api/axiosInstance';
 
 
 
@@ -32,8 +32,8 @@ function ClientDashboard() {
         const getData = async () => {
             try {
                 setLoader(true)
-                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/clientdashboard', { params: { client_id: userDetails.id } })
-                //console.log(res.data)
+                const res = await instance.get('/api/clientdashboard', { params: { client_id: userDetails.id } })
+                // console.log(res.data)
                 setSearchFields({ campaign_name: res.data.selectedCamp })
                 res.data.selectedCamp && setSelectedCamp(res.data.selectedCamp.campaign_name)
                 setCampaignStats(res.data)
@@ -52,7 +52,7 @@ function ClientDashboard() {
 
             getData()
         }
-        //console.log('came',userDetails)
+        // console.log('came',userDetails)
 
     }, [userDetails])
 
@@ -63,23 +63,26 @@ function ClientDashboard() {
 
 
     const handleLogout = () => {
-        axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/logout')
-            .then(res => {
-                //console.log(res.data)
-                swal({
-                    title: res.data,
+        // axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/logout')
+        //     .then(res => {
+        //         // console.log(res.data)
+        //         swal({
+        //             title: res.data,
 
-                    icon: "success"
-                })
-                navigate('/login')
-            })
-            .catch(() => {
-                swal({
-                    title: 'Eroor Occured!',
-                    text: "Please contact admin",
-                    icon: "error"
-                })
-            })
+        //             icon: "success"
+        //         })
+        //         navigate('/login')
+        //     })
+        //     .catch(() => {
+        //         swal({
+        //             title: 'Eroor Occured!',
+        //             text: "Please contact admin",
+        //             icon: "error"
+        //         })
+        //     })
+        Cookies.remove('ssid')
+        navigate('/login')
+        
     }
 
     const donut = {
@@ -189,14 +192,14 @@ function ClientDashboard() {
 
     };
 
-    const handleSearch = async(e)=>{
+    const handleSearch = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/searchcampaign', { params: searchFields })
-            //console.log(res.data)
-            
+            const res = await instance.get('/api/searchcampaign', { params: searchFields })
+            // console.log(res.data)
+
             setSelectedCamp(searchFields.campaign_name.campaign_name)
-            setCampaignStats({...campaignStats, ...res.data})
+            setCampaignStats({ ...campaignStats, ...res.data })
         }
         catch (err) {
             swal({
@@ -209,15 +212,15 @@ function ClientDashboard() {
     }
 
 
-    const handleCampaignChange = async(_,newValue) =>{
-        if(newValue){
+    const handleCampaignChange = async (_, newValue) => {
+        if (newValue) {
             try {
                 setLoader(true)
-                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/campaigninfo', { params: {client_id:userDetails.id, campaign:newValue} })
-                console.log(res.data)
-                
+                const res = await instance.get('/api/campaigninfo', { params: { client_id: userDetails.id, campaign: newValue } })
+                // console.log(res.data)
+
                 setSelectedCamp(res.data.selectedCamp)
-                setCampaignStats({...campaignStats, ...res.data})
+                setCampaignStats({ ...campaignStats, ...res.data })
                 setLoader(false)
             }
             catch (err) {
@@ -243,13 +246,13 @@ function ClientDashboard() {
                             <Box sx={{ display: 'flex', justifyContent: 'flex-start', height: '60px', }}>
                                 <img src='companyLogoHere.png' alt='companyLogo' style={{ width: '80%', height: '100%', objectFit: 'contain' }} />
                             </Box>
-                            {userDetails.company_logo!=='' && <Box sx={{ display: 'flex', justifyContent: 'flex-start', height: '60px', }}>
+                            {userDetails.company_logo !== '' && <Box sx={{ display: 'flex', justifyContent: 'flex-start', height: '60px', }}>
                                 <img src={userDetails.company_logo} alt='companyLogo' style={{ width: '80%', height: '100%', objectFit: 'contain' }} />
                             </Box>}
                             <Box >
                                 <Button
-                                
-                                startIcon={<Logout />}
+
+                                    startIcon={<Logout />}
                                     onClick={handleLogout}
                                     sx={{ my: 2, color: 'black', }}
                                 >
@@ -270,7 +273,7 @@ function ClientDashboard() {
                             <Typography variant='h3' fontFamily={'"Times New Roman", Times, serif;'} >
                                 {userDetails.client_name !== '' && <TypeAnimation
                                     sequence={[
-                                        'Welcome, ' + userDetails.client_name ,  
+                                        'Welcome, ' + userDetails.client_name,
                                         5000, // Waits 1s
                                         '',
                                     ]}
@@ -513,7 +516,7 @@ function ClientDashboard() {
                                 }}
                                 viewport={{ once: true }}
                             >
-                                <Paper  elevation={8}>
+                                <Paper elevation={8}>
                                     <DataTable value={campaignStats.tableData.data} size='small' height={'600px'} paginator rows={10} paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                                         rowsPerPageOptions={[10, 25, 50, 100, 300, 500]} tableStyle={{ maxWidth: '150rem' }} scrollHeight='350px' scrollable>
                                         {
@@ -531,29 +534,29 @@ function ClientDashboard() {
                     }
                     {
                         campaignStats.tableData.data.length === 0 && <>
-                        <Grid item xs={12} sm={12} lg={12} xl={12}>
-                            <motion.div
+                            <Grid item xs={12} sm={12} lg={12} xl={12}>
+                                <motion.div
 
-                                initial={{
-                                    opacity: 0,
-                                    // if odd index card,slide from right instead of left
+                                    initial={{
+                                        opacity: 0,
+                                        // if odd index card,slide from right instead of left
 
-                                }}
-                                whileInView={{
-                                    opacity: 1,
+                                    }}
+                                    whileInView={{
+                                        opacity: 1,
 
-                                    transition: {
-                                        duration: 1 // Animation duration
-                                    }
-                                }}
-                                viewport={{ once: true }}
-                            >
-                                
-                                <Box sx={{ width: '100%', height: '300px', backgroundColor: '#fafbfd', display:'flex', justifyContent:'center' }}>
-                                <img src='https://static.shegatravel.com/assets/whitelable1/img/norecordfound.gif' alt='No records' style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                            </Box>
-                                
-                            </motion.div>
+                                        transition: {
+                                            duration: 1 // Animation duration
+                                        }
+                                    }}
+                                    viewport={{ once: true }}
+                                >
+
+                                    <Box sx={{ width: '100%', height: '300px', backgroundColor: '#fafbfd', display: 'flex', justifyContent: 'center' }}>
+                                        <img src='https://static.shegatravel.com/assets/whitelable1/img/norecordfound.gif' alt='No records' style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                    </Box>
+
+                                </motion.div>
                             </Grid>
                         </>
                     }

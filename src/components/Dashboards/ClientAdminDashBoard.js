@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams,} from 'react-router-dom';
 import Navbar from '../NavBar/Navbar';
-import axios from 'axios';
 import swal from 'sweetalert';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import { DataTable } from 'primereact/datatable';
@@ -12,11 +11,12 @@ import CountUp from 'react-countup';
 import Chart from "react-apexcharts";
 import { TypeAnimation } from 'react-type-animation';
 import Loader from '../Loader';
+import instance from '../../api/axiosInstance';
 
 function ClientAdminDashBoard() {
     const params =useParams()
     const [campaignStats, setCampaignStats] = useState({ campInfo: { total_campaigns: 0, live_campaigns: 0, closed_campaigns: 0 }, campaigns: [], areaGraphData: { labels: [], data: [] }, donutGraphData: { labels: [], data: [] }, tableData: { data: [], headers: [] }, selectedCamp:null })
-    //console.log( params)
+    // console.log( params)
     const [loader, setLoader] = useState(false)
     
 
@@ -24,8 +24,8 @@ function ClientAdminDashBoard() {
         const getData = async() =>{
             try {
                 setLoader(true)
-                const res = await axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/clientdashboard-admin', { params: params })
-                //console.log(res.data)
+                const res = await instance.get('/api/clientdashboard-admin', { params: params })
+                // console.log(res.data)
                 // setSearchFields({ campaign_name: res.data.selectedCamp })
                 // res.data.selectedCamp && setSelectedCamp(res.data.selectedCamp.campaign_name)
                 setCampaignStats(res.data)

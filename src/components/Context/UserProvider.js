@@ -1,29 +1,29 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import UserContext from './UserContext';
 import swal from 'sweetalert';
+import instance from '../../api/axiosInstance';
 
 function UserProvider(props) {
   const [userDetails, setUserDetails] = useState({id:'', client_name:'', username:'', email:'', company_logo:'', role:''})
   const [unAuth, setUnAuth] = useState(false)
+  const [updateDetails, setUpdateDetails] = useState(0)
   const navigate = useNavigate()
-  //console.log(context)
 
   useEffect(() => {
 
     if (Cookies.get('ssid') !== undefined ) {
-      axios.get(process.env.REACT_APP_BACKEND_SERVER+'/api/checkuser')
+      instance.get('/api/checkuser')
         .then(res => { 
-          //console.log(res.data)         
+          // console.log(res.data)         
           setUserDetails(res.data)
         })
         .catch(err => {
 
           if (err.response.data === "Unauthorized") {
-            //console.log('hey', err)
-            Cookies.remove('ssid')
+            // console.log('hey', err)
+            //Cookies.remove('ssid')
             swal({
               title:'Unauthorized User',
               icon: "error",
@@ -38,23 +38,23 @@ function UserProvider(props) {
             })
             
           }
-          //console.log(err)
+          // console.log(err)
         })
     }
 
-  }, [])
-  //console.log('context called')
+  }, [updateDetails])
+  // console.log('context called')
 
   if (unAuth) {
     setUnAuth(false)
-    //console.log('coming')
+    // console.log('coming')
 
     return navigate('/login', { replace: true })
   }
 
 
-  const handleUserDetails = (data) => {
-    setUserDetails(data)
+  const handleUserDetails = () => {
+    setUpdateDetails(prev=>prev+1)
   }
 
   return (
