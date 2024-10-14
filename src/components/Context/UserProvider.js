@@ -11,9 +11,11 @@ function UserProvider(props) {
   const [updateDetails, setUpdateDetails] = useState(0)
   const navigate = useNavigate()
 
+  const token =  Cookies.get('ssid')
+
   useEffect(() => {
 
-    if (Cookies.get('ssid') !== undefined ) {
+    if (token !== undefined ) {
       instance.get('/api/checkuser')
         .then(res => { 
           // console.log(res.data)         
@@ -23,7 +25,7 @@ function UserProvider(props) {
 
           if (err.response.data === "Unauthorized") {
             // console.log('hey', err)
-            //Cookies.remove('ssid')
+            Cookies.remove('ssid')
             swal({
               title:'Unauthorized User',
               icon: "error",
@@ -42,7 +44,7 @@ function UserProvider(props) {
         })
     }
 
-  }, [updateDetails])
+  }, [updateDetails,token])
   // console.log('context called')
 
   if (unAuth) {
