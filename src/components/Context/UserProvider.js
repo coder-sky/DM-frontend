@@ -5,6 +5,7 @@ import UserContext from './UserContext';
 import swal from 'sweetalert';
 import instance from '../../api/axiosInstance';
 
+
 function UserProvider(props) {
   const [userDetails, setUserDetails] = useState({id:'', client_name:'', username:'', email:'', company_logo:'', role:''})
   const [unAuth, setUnAuth] = useState(false)
@@ -12,10 +13,9 @@ function UserProvider(props) {
   const navigate = useNavigate()
 
   const token =  Cookies.get('ssid')
-
   useEffect(() => {
-
     if (token !== undefined ) {
+      console.log(token)
       instance.get('/api/checkuser')
         .then(res => { 
           // console.log(res.data)         
@@ -25,7 +25,7 @@ function UserProvider(props) {
 
           if (err.response.data === "Unauthorized") {
             // console.log('hey', err)
-            Cookies.remove('ssid')
+            //Cookies.remove('ssid')
             swal({
               title:'Unauthorized User',
               icon: "error",

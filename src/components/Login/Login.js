@@ -50,11 +50,8 @@ const Login = () => {
   const [fields, setFields] = useState({ username: '', password: '' })
   const [visibility, setVisibility] = useState(false)
   const [loadingButton, setLoadingButton] = useState(false)
-  
   const { handleUserDetails } = useContext(UserContext)
   const navigate = useNavigate()
-
-  
 
   const globe = useMemo(() => {
     const icons = [siFacebook, siGoogleads, siInstagram, siAmazon, siYoutube, siMicrosoftbing, siSnapchat, siLinkedin, siReddit, siX, siSpotify, siPinterest, siAdroll, siQuora, siPandora, siSwiggy, siZomato, siSony, siUber, siAirtel, siBritishairways, siCocacola, siHyundai, siIcicibank, siIgn, siLenovo, siSuzuki, siVodafone, siUnilever, siSamsung].map((icon) => {
@@ -73,15 +70,8 @@ const Login = () => {
       </Cloud>
     )
   }, [])
-  const token = document.cookie
-  .split('; ')
-  .find(row => row.startsWith('ssid='))
-  ?.split('=')[1];
 
-// console.log('token',token); // Should log your JWT token
-  // console.log(Cookies.get('ssid'),process.env.REACT_APP_BACKEND_SERVER )
   if (Cookies.get('ssid') !== undefined) {
-    
     return <Navigate to="/home" replace={true} />;
   }
 
@@ -93,7 +83,7 @@ const Login = () => {
       )
       .then(res => {
         // console.log(res)
-        Cookies.set('ssid', res.data)
+        Cookies.set('ssid', res.data,{secure:true, expires:30})
         handleUserDetails()
         // console.log(res.data)       
         navigate('/home')
