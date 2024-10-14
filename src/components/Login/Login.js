@@ -93,9 +93,9 @@ const Login = () => {
       )
       .then(res => {
         // console.log(res)
-        handleUserDetails()
-        // console.log(res.data)
         Cookies.set('ssid', res.data)
+        handleUserDetails()
+        // console.log(res.data)       
         navigate('/home')
 
       })
