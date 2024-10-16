@@ -10,7 +10,7 @@ import Instance from '../../api/apiInstance';
 function ForgotPassword() {
   const [forgotPasswordFields, setForgotPasswordFields] = useState({username:'',email:''})
   const [activeView, setActiveView] = useState(0)
-
+  const [token, setToken] = useState('')
   const [clientOtp, setClientOtp] = useState('')
   const [showPassword, setShowPassword] = useState({ newPass: false, confirmPass: false });
   const [password, setPassword] = useState({ newPass: '', confirmPass: '' })
@@ -121,8 +121,9 @@ function ForgotPassword() {
       setLoadSubmit(true)
       try{
         const api = Instance()
-        await api.post('/api/verifycode', { ...forgotPasswordFields, ref:otpRef, clientOtp:clientOtp })
-        console.log('done')
+        const res = await api.post('/api/verifycode', { ...forgotPasswordFields, ref:otpRef, clientOtp:clientOtp })
+        setToken(res.data)
+        //console.log('done')
         setActiveView(2)
         setLoadSubmit(false)
       }
@@ -147,6 +148,7 @@ function ForgotPassword() {
             setActiveView(0)
             setClientOtp('')
             setOtpRef('')
+            setToken('')
           }} >
             <ArrowBack />
           </IconButton>
@@ -204,7 +206,7 @@ function ForgotPassword() {
         setLoadReset(true)
         try {
           const api = Instance()
-          const result = await api.put('/api/resetpassword', { ...forgotPasswordFields, password: password.confirmPass })
+          const result = await api.put('/api/resetpassword', { ...forgotPasswordFields, password: password.confirmPass, validationid:token })
           swal({
             title: "Succeed",
             text: result.data,
@@ -216,6 +218,7 @@ function ForgotPassword() {
           setOtpRef('')
           setPassword('')
           setShowPassword('')
+          setToken('')
           navigate('/login')
 
 
@@ -246,6 +249,7 @@ function ForgotPassword() {
               setOtpRef('')
               setPassword({ newPass: '', confirmPass: '' })
               setShowPassword({ newPass: false, confirmPass: false });
+              setToken('')
             }} >
               <ArrowBack />
             </IconButton>

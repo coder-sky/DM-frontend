@@ -5,7 +5,6 @@ const Instance = () =>{
     //console.log(Cookies.get('ssid'))
     return axios.create({
         withCredentials: true,
-        credentials: 'include',
         baseURL: process.env.REACT_APP_BACKEND_SERVER,
         headers: {
             'Authorization':`Bearer ${Cookies.get('ssid')}`
