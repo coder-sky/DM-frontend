@@ -37,6 +37,7 @@ function ClientDashboard() {
                 // console.log(res.data)
                 setSearchFields({ campaign_name: res.data.selectedCamp })
                 res.data.selectedCamp && setSelectedCamp(res.data.selectedCamp.campaign_name)
+                console.log(res.data)
                 setCampaignStats(res.data)
                 setLoader(false)
             }
@@ -294,7 +295,7 @@ function ClientDashboard() {
                             <Paper sx={{ height: '100%', p: 1 }} >
                                 <Typography component={'h3'} variant='p' color={'#0086B4'}>Total Campaigns</Typography>
                                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                                    {campaignStats.campInfo.total_campaigns !== 0 && <CountUp start={0} end={campaignStats.campInfo.total_campaigns} duration={5} >
+                                    {true && <CountUp start={0} end={1000} duration={5} >
 
                                         {({ countUpRef }) => (
                                             <div>
@@ -303,9 +304,7 @@ function ClientDashboard() {
                                         )}
                                     </CountUp>
                                     }
-                                    {
-                                        campaignStats.campInfo.total_campaigns === 0 && <span style={{ fontSize: '40px', fontWeight: 'bold', color: '#0086B4' }}>0</span>
-                                    }
+                                    
                                 </Box>
 
                             </Paper>
