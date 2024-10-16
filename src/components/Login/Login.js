@@ -43,7 +43,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import swal from 'sweetalert';
 import Cookies from 'js-cookie'
 import UserContext from '../Context/UserContext';
-import instance from '../../api/axiosInstance';
+import CryptoJS from 'crypto-js';
+import Instance from '../../api/apiInstance';
 
 
 const Login = () => {
@@ -77,14 +78,16 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault()
-    
     setLoadingButton(true)
-    instance.post('/api/login', fields,{withCredentials:true}
+    const api = Instance()
+    api.post('/api/login', fields,
       )
       .then(res => {
         // console.log(res)
-        Cookies.set('ssid', res.data,{secure:true, expires:30})
-        handleUserDetails()
+        const {authToken, userDetails} = res.data
+        Cookies.set('ssid', authToken,{secure:true, expires:30})
+        const decrypted = JSON.parse(CryptoJS.AES.decrypt(userDetails,process.env.REACT_APP_DATA_ENCRYPTION_SECRETE).toString(CryptoJS.enc.Utf8))
+        handleUserDetails(decrypted)
         // console.log(res.data)       
         navigate('/home')
 

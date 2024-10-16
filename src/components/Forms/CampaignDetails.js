@@ -7,7 +7,7 @@ import swal from 'sweetalert';
 import {Search } from '@mui/icons-material';
 import Loader from '../Loader';
 import LoadingButton from '@mui/lab/LoadingButton';
-import instance from '../../api/axiosInstance';
+import Instance from '../../api/apiInstance';
 
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -39,7 +39,8 @@ function CampaignDetails() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await instance.get('/api/campaigndetails')
+                const api = Instance()
+                const res = await api.get('/api/campaigndetails')
                 // console.log(res.data)
                 const data = res.data.map(data => ({ ...data, start_date: new Date(data.start_date).toLocaleString('en-CA').slice(0, 10), end_date: new Date(data.end_date).toLocaleString('en-CA').slice(0, 10) }))
                 setCampaignData(data)
@@ -72,7 +73,8 @@ function CampaignDetails() {
             .then((willDelete) => {
                 if (willDelete) {
                     // console.log(row)
-                    instance.delete('/api/deletecampaign/' + row.camp_id)
+                    const api = Instance()
+                    api.delete('/api/deletecampaign/' + row.camp_id)
                         .then(res => {
                             setUpdate(prev => prev + 1)
                             swal(res.data, {
@@ -192,7 +194,8 @@ function CampaignDetails() {
                 if (JSON.stringify(prevEditFields) !== JSON.stringify(editFields)) {
                     setLoadButton(true)
                     try {
-                        const res = await instance.put('/api/editcampaign', editFields)
+                        const api = Instance()
+                        const res = await api.put('/api/editcampaign', editFields)
                         // console.log(res.data)
                         setLoadButton(false)
                         handleClose()

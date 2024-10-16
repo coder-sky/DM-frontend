@@ -11,7 +11,7 @@ import CountUp from 'react-countup';
 import Chart from "react-apexcharts";
 import { TypeAnimation } from 'react-type-animation';
 import Loader from '../Loader';
-import instance from '../../api/axiosInstance';
+import Instance from '../../api/apiInstance';
 
 function ClientAdminDashBoard() {
     const params =useParams()
@@ -24,7 +24,8 @@ function ClientAdminDashBoard() {
         const getData = async() =>{
             try {
                 setLoader(true)
-                const res = await instance.get('/api/clientdashboard-admin', { params: params })
+                const api = Instance()
+                const res = await api.get('/api/clientdashboard-admin', { params: params })
                 // console.log(res.data)
                 // setSearchFields({ campaign_name: res.data.selectedCamp })
                 // res.data.selectedCamp && setSelectedCamp(res.data.selectedCamp.campaign_name)

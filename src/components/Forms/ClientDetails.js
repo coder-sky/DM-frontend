@@ -9,7 +9,7 @@ import { Cancel, CloudUpload, Search } from '@mui/icons-material';
 
 import Loader from '../Loader';
 import LoadingButton from '@mui/lab/LoadingButton';
-import instance from '../../api/axiosInstance';
+import Instance from '../../api/apiInstance';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -51,7 +51,8 @@ function ClientDetails() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await instance.get('/api/clientdetails')
+                const api = Instance()
+                const res = await api.get('/api/clientdetails')
                 // console.log(res.data)
                 const data = res.data.map(data => ({ ...data, date_of_joining: new Date(data.date_of_joining).toLocaleString('en-CA').slice(0, 10) }))
                 setClientData(data)
@@ -89,7 +90,8 @@ function ClientDetails() {
             .then((willDelete) => {
                 if (willDelete) {
                     // console.log(row)
-                    instance.post('/api/deleteclient', row)
+                    const api = Instance()
+                    api.post('/api/deleteclient', row)
                         .then(res => {
                             setUpdate(prev => prev + 1)
                             swal(res.data, {
@@ -153,7 +155,8 @@ function ClientDetails() {
             if(JSON.stringify(prevEditFields)!==JSON.stringify(editFields)){
                 setLoadButton(true)
                 try{
-                    const res = await instance.put('/api/editclient', {newData:editFields,prevData:prevEditFields})
+                    const api = Instance()
+                    const res = await api.put('/api/editclient', {newData:editFields,prevData:prevEditFields})
                     // console.log(res.data)
                     setLoadButton(false)
                     setOpen(false)

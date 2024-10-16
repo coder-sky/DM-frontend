@@ -5,7 +5,7 @@ import { VisibilityOff, RotateLeft, Visibility, CloudUpload, Cancel, } from '@mu
 import { generate } from '@wcj/generate-password';
 import swal from 'sweetalert';
 import LoadingButton from '@mui/lab/LoadingButton';
-import instance from '../../api/axiosInstance';
+import Instance from '../../api/apiInstance';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -57,7 +57,8 @@ function ClientForm() {
         e.preventDefault()
         // console.log(fields)
         handleLoadButton(true)
-        instance.post('/api/addclientdetails', fields)
+        const api = Instance()
+        api.post('/api/addclientdetails', fields)
             .then(res => {
                 handleClear()
                 handleLoadButton(false)

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
 import LoadingButton from '@mui/lab/LoadingButton'
 import swal from 'sweetalert'
-import instance from '../../api/axiosInstance'
+import Instance from '../../api/apiInstance';
 
 function ForgotPassword() {
   const [forgotPasswordFields, setForgotPasswordFields] = useState({username:'',email:''})
@@ -26,7 +26,8 @@ function ForgotPassword() {
       e.preventDefault()
       setLoadSubmit(true)
       try {
-        const result = await instance.post('/api/forgotpassword', forgotPasswordFields)
+        const api = Instance()
+        const result = await api.post('/api/forgotpassword', forgotPasswordFields)
         // console.log(result)
       
         swal({
@@ -119,7 +120,9 @@ function ForgotPassword() {
       e.preventDefault()
       setLoadSubmit(true)
       try{
-        await instance.post('/api/verifycode', { ...forgotPasswordFields, ref:otpRef, clientOtp:clientOtp })
+        const api = Instance()
+        await api.post('/api/verifycode', { ...forgotPasswordFields, ref:otpRef, clientOtp:clientOtp })
+        console.log('done')
         setActiveView(2)
         setLoadSubmit(false)
       }
@@ -200,7 +203,8 @@ function ForgotPassword() {
       else {
         setLoadReset(true)
         try {
-          const result = await instance.put('/api/resetpassword', { ...forgotPasswordFields, password: password.confirmPass })
+          const api = Instance()
+          const result = await api.put('/api/resetpassword', { ...forgotPasswordFields, password: password.confirmPass })
           swal({
             title: "Succeed",
             text: result.data,

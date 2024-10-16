@@ -5,7 +5,7 @@ import swal from 'sweetalert';
 import Loader from '../Loader';
 import LoadingButton from '@mui/lab/LoadingButton';
 import India from './India';
-import instance from '../../api/axiosInstance';
+import Instance from '../../api/apiInstance';
 
 function ReportForm() {
     const [inputValue, setInputValue] = useState('');
@@ -26,7 +26,8 @@ function ReportForm() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await instance.get('/api/clientdetails')
+                const api = Instance()
+                const res = await api.get('/api/clientdetails')
                 // console.log(res.data)
                 const data = res.data.map(data => ({ id: data.id, clientName: data.client_name }))
                 setClientData(data)
@@ -54,7 +55,8 @@ function ReportForm() {
             const { id } = newValue
             try {
                 setLoader(true)
-                const res = await instance.get('/api/campaigns/' + id)
+                const api = Instance()
+                const res = await api.get('/api/campaigns/' + id)
                 // console.log(res.data)
                 setCampaignData(res.data)
                 const data = res.data.map(data => ({ campaignName: data.campaign_name, campId: data.camp_id }))
@@ -179,7 +181,8 @@ function ReportForm() {
         e.preventDefault()
         // console.log(fields)
         setLoadButton(true)
-        instance.post('/api/addreport', fields)
+        const api = Instance()
+        api.post('/api/addreport', fields)
             .then(res => {
                 handleClear()
                 setLoadButton(false)

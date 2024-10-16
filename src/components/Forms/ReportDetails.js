@@ -9,7 +9,7 @@ import Loader from '../Loader';
 import LoadingButton from '@mui/lab/LoadingButton';
 import India from './India';
 import { useNavigate } from 'react-router-dom';
-import instance from '../../api/axiosInstance';
+import Instance from '../../api/apiInstance';
 
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -61,12 +61,13 @@ function ReportDetails() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await instance.get('/api/reports')
+                const api = Instance()
+                const res = await api.get('/api/reports')
                 // console.log(res.data)
                 const data = res.data.data.map(data => ({ ...data, date: new Date(data.date).toLocaleString('en-CA').slice(0, 10), start_date: new Date(data.start_date).toLocaleString('en-CA').slice(0, 10), end_date: new Date(data.end_date).toLocaleString('en-CA').slice(0, 10) }))
                 setReportData({ ...res.data, data: data })
                 setFiltedReportData(data)
-                const result = await instance.get('/api/clientdetails')
+                const result = await api.get('/api/clientdetails')
                 // console.log(res.data)
                 const dataCli = result.data.map(data => ({ id: data.id, clientName: data.client_name }))
                 dataCli.unshift({ id: 1, clientName: 'All' })
@@ -99,7 +100,8 @@ function ReportDetails() {
             .then((willDelete) => {
                 if (willDelete) {
                     // console.log(row)
-                    instance.delete('/api/deletecampaignrecord/', { params: { id: row.id, camp_id: row.camp_id } })
+                    const api = Instance()
+                    api.delete('/api/deletecampaignrecord/', { params: { id: row.id, camp_id: row.camp_id } })
                         .then(res => {
                             setUpdate(prev => prev + 1)
                             swal(res.data, {
@@ -223,12 +225,13 @@ function ReportDetails() {
                 setLoadButton(true)
                 try {
                     // console.log('edit', editFields)
-                    const res = await instance.put('/api/editcampaignreport', editFields)
+                    const api = Instance()
+                    const res = await api.put('/api/editcampaignreport', editFields)
                     // console.log(res.data)
                     setLoadButton(false)
                     handleClose()
                     if (searchFields.campaignName !== null && searchFields.clientName !== null) {
-                        const res = await instance.get(`/api/searchreports/`, { params: searchFields })
+                        const res = await api.get(`/api/searchreports/`, { params: searchFields })
                         if (res.data.info !== undefined) {
                             setCampaignInfo(res.data.info)
                             // console.log(res.data.info,'done')
@@ -523,7 +526,8 @@ function ReportDetails() {
             } else {
                 try {
                     setLoader(true)
-                    const res = await instance.get('/api/campaigns/' + id)
+                    const api = Instance()
+                    const res = await api.get('/api/campaigns/' + id)
                     // console.log(res.data)
                     //setCampaignData(res.data)
                     const data = res.data.map(data => ({ campaignName: data.campaign_name, campId: data.camp_id }))
@@ -559,7 +563,8 @@ function ReportDetails() {
         e.preventDefault()
         try {
             setLoader(true)
-            const res = await instance.get(`/api/searchreports/`, { params: searchFields })
+            const api = Instance()
+            const res = await api.get(`/api/searchreports/`, { params: searchFields })
             // console.log(res.data,res.data.info!==undefined)
 
             if (res.data.info !== undefined) {

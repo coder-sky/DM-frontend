@@ -13,7 +13,7 @@ import { motion } from "framer-motion"
 import CountUp from 'react-countup';
 import Chart from "react-apexcharts";
 import Loader from '../Loader';
-import instance from '../../api/axiosInstance';
+import Instance from '../../api/apiInstance';
 
 
 
@@ -32,7 +32,8 @@ function ClientDashboard() {
         const getData = async () => {
             try {
                 setLoader(true)
-                const res = await instance.get('/api/clientdashboard', { params: { client_id: userDetails.id } })
+                const api = Instance()
+                const res = await api.get('/api/clientdashboard', { params: { client_id: userDetails.id } })
                 // console.log(res.data)
                 setSearchFields({ campaign_name: res.data.selectedCamp })
                 res.data.selectedCamp && setSelectedCamp(res.data.selectedCamp.campaign_name)
@@ -195,7 +196,8 @@ function ClientDashboard() {
     const handleSearch = async (e) => {
         e.preventDefault()
         try {
-            const res = await instance.get('/api/searchcampaign', { params: searchFields })
+            const api = Instance()
+            const res = await api.get('/api/searchcampaign', { params: searchFields })
             // console.log(res.data)
 
             setSelectedCamp(searchFields.campaign_name.campaign_name)
@@ -216,7 +218,8 @@ function ClientDashboard() {
         if (newValue) {
             try {
                 setLoader(true)
-                const res = await instance.get('/api/campaigninfo', { params: { client_id: userDetails.id, campaign: newValue } })
+                const api = Instance()
+                const res = await api.get('/api/campaigninfo', { params: { client_id: userDetails.id, campaign: newValue } })
                 // console.log(res.data)
 
                 setSelectedCamp(res.data.selectedCamp)

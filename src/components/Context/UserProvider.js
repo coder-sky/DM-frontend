@@ -3,23 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import UserContext from './UserContext';
 import swal from 'sweetalert';
-import instance from '../../api/axiosInstance';
+import CryptoJS from 'crypto-js';
+import Instance from '../../api/apiInstance';
 
 
 function UserProvider(props) {
   const [userDetails, setUserDetails] = useState({id:'', client_name:'', username:'', email:'', company_logo:'', role:''})
   const [unAuth, setUnAuth] = useState(false)
-  const [updateDetails, setUpdateDetails] = useState(0)
   const navigate = useNavigate()
 
-  const token =  Cookies.get('ssid')
+
   useEffect(() => {
-    if (token !== undefined ) {
-      console.log(token)
-      instance.get('/api/checkuser')
+    if (Cookies.get('ssid') !== undefined ) {
+      const api = Instance()
+      api.get('/api/checkuser')
         .then(res => { 
-          // console.log(res.data)         
-          setUserDetails(res.data)
+          // console.log(res.data)   
+          const decrypted = JSON.parse(CryptoJS.AES.decrypt(res.data,process.env.REACT_APP_DATA_ENCRYPTION_SECRETE).toString(CryptoJS.enc.Utf8))      
+          setUserDetails(decrypted)
         })
         .catch(err => {
 
@@ -44,7 +45,7 @@ function UserProvider(props) {
         })
     }
 
-  }, [updateDetails,token])
+  }, [])
   // console.log('context called')
 
   if (unAuth) {
@@ -55,8 +56,9 @@ function UserProvider(props) {
   }
 
 
-  const handleUserDetails = () => {
-    setUpdateDetails(prev=>prev+1)
+  const handleUserDetails = (data) => {
+    //console.log(data)
+    setUserDetails(data)
   }
 
   return (

@@ -4,7 +4,8 @@ import Navbar from '../NavBar/Navbar'
 import swal from 'sweetalert';
 import Loader from '../Loader';
 import LoadingButton from '@mui/lab/LoadingButton';
-import instance from '../../api/axiosInstance';
+
+import Instance from '../../api/apiInstance';
 
 function CampaignForm() {
     const [inputValue, setInputValue] = useState('');
@@ -18,7 +19,8 @@ function CampaignForm() {
         const getData = async () => {
             setLoader(true)
             try {
-                const res = await instance.get('/api/clientdetails')
+                const api = Instance()
+                const res = await api.get('/api/clientdetails')
                 // console.log(res.data)
                 const data = res.data.map(data => ({ id: data.id, clientName: data.client_name }))
                 setClientData(data)
@@ -121,7 +123,8 @@ function CampaignForm() {
         else {
             setLoadButton(true)
             try {
-                const res = await instance.post('/api/addcampaign', fields)
+                const api = Instance()
+                const res = await api.post('/api/addcampaign', fields)
                 // console.log(res.data)
                 setLoadButton(false)
                 swal({
