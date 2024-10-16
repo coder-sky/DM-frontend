@@ -37,7 +37,7 @@ function ClientDashboard() {
                 // console.log(res.data)
                 setSearchFields({ campaign_name: res.data.selectedCamp })
                 res.data.selectedCamp && setSelectedCamp(res.data.selectedCamp.campaign_name)
-                setCampaignStats(res.data)
+                setCampaignStats({...res.data,tableData:{...res.data.tableData,data:res.data.tableData.data.map(info=>({...info, date:new Date(info.date).toLocaleString('en-CA').slice(0,10)}))}})
                 setLoader(false)
             }
             catch (err) {
@@ -223,7 +223,8 @@ function ClientDashboard() {
                 // console.log(res.data)
 
                 setSelectedCamp(res.data.selectedCamp)
-                setCampaignStats({ ...campaignStats, ...res.data })
+                //setCampaignStats({ ...campaignStats, ...res.data })
+                setCampaignStats({...campaignStats, ...res.data,tableData:{...res.data.tableData,data:res.data.tableData.data.map(info=>({...info, date:new Date(info.date).toLocaleString('en-CA').slice(0,10)}))}})
                 setLoader(false)
             }
             catch (err) {

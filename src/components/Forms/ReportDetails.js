@@ -239,10 +239,11 @@ function ReportDetails() {
                         else {
                             campaignInfo.planned.length !== 0 && setCampaignInfo({ name: '', status: '', planned: [] })
                         }
-
+                        
                         const data = res.data.data.map(data => ({ ...data, date: new Date(data.date).toLocaleString('en-CA').slice(0, 10), start_date: new Date(data.start_date).toLocaleString('en-CA').slice(0, 10), end_date: new Date(data.end_date).toLocaleString('en-CA').slice(0, 10) }))
+                        //console.log('data', data)
                         setReportData({ ...res.data, data: data })
-                        setFiltedReportData(res.data.data)
+                        setFiltedReportData(data)
                     }
                     else {
                         setUpdate(prev => prev + 1)
