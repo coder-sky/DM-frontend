@@ -134,7 +134,6 @@ function CampaignDetails() {
             if (e.target.name === 'planned_impressions') {
                 field = 'planned_budget_impressions'
                 cal = ((val * editFields.planned_cpm) / 1000).toFixed(2)
-                console.log('check',editFields.planned_clicks !== 0 && editFields.planned_clicks !== '', cal)
                 if (editFields.planned_clicks !== 0 && editFields.planned_clicks !== '') {
                     ctrPer = ((editFields.planned_clicks / val) * 100).toFixed(2)
                 }
