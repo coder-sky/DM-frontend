@@ -26,7 +26,7 @@ function UserProvider(props) {
 
           if (err.response.data === "Unauthorized") {
             // console.log('hey', err)
-            //Cookies.remove('ssid')
+            Cookies.remove('ssid')
             swal({
               title:'Unauthorized User',
               icon: "error",
