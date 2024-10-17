@@ -134,13 +134,14 @@ function CampaignDetails() {
             if (e.target.name === 'planned_impressions') {
                 field = 'planned_budget_impressions'
                 cal = ((val * editFields.planned_cpm) / 1000).toFixed(2)
-
+                console.log('check',editFields.planned_clicks !== 0 && editFields.planned_clicks !== '', cal)
                 if (editFields.planned_clicks !== 0 && editFields.planned_clicks !== '') {
                     ctrPer = ((editFields.planned_clicks / val) * 100).toFixed(2)
                 }
                 else {
                     ctrPer = 0
                 }
+                // console.log('ctr in pl_imp', ctrPer)
 
             }
             if (e.target.name === 'planned_cpm') {
@@ -171,15 +172,26 @@ function CampaignDetails() {
                 field = 'planned_budget_sessions'
                 cal = (editFields.planned_sessions * val).toFixed(2)
             }
+            // console.log(field, cal, ctrPer)
             if (field !== undefined && cal !== undefined) {
-                setEditFields({ ...editFields, [e.target.name]: e.target.value, [field]: cal })
+                if (ctrPer !== undefined && ctrPer !== 'Infinity') {
+                    setEditFields({ ...editFields, [field]: cal, [e.target.name]: e.target.value, ctr: ctrPer })
+                }
+                else{
+                    setEditFields({ ...editFields, [field]: cal, [e.target.name]: e.target.value })
+
+                } 
             }
             else {
-                setEditFields({ ...editFields, [e.target.name]: e.target.value })
+                if (ctrPer !== undefined && ctrPer !== 'Infinity') {
+                    setEditFields({ ...editFields, [e.target.name]: e.target.value, ctr: ctrPer })
+                }
+                else{
+                    setEditFields({ ...editFields, [e.target.name]: e.target.value })                    
+                }
+                
             }
-            if (ctrPer !== undefined && ctrPer !== 'Infinity') {
-                setEditFields({ ...editFields, [e.target.name]: e.target.value, ctr: ctrPer })
-            }
+            
 
 
         }

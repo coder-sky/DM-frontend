@@ -100,15 +100,24 @@ function CampaignForm() {
             cal = (fields.plannedSessions * val).toFixed(2)
         }
         if (field !== undefined && cal !== undefined) {
-            setFields({ ...fields, [e.target.name]: e.target.value, [field]: cal })
+            if (ctrPer !== undefined && ctrPer !== 'Infinity') {
+                setFields({ ...fields, [e.target.name]: e.target.value, [field]: cal,  ctr: ctrPer })
+            }
+            else{
+                setFields({ ...fields, [e.target.name]: e.target.value, [field]: cal })
+            }
+            
         }
         else {
-            setFields({ ...fields, [e.target.name]: e.target.value })
+            if (ctrPer !== undefined && ctrPer !== 'Infinity') {
+                setFields({ ...fields, [e.target.name]: e.target.value, ctr: ctrPer })
+            }
+            else{
+                setFields({ ...fields, [e.target.name]: e.target.value })
+            }
+            
         }
-        if (ctrPer !== undefined && ctrPer !== 'Infinity') {
-            setFields({ ...fields, [e.target.name]: e.target.value, ctr: ctrPer })
-        }
-
+    
 
     }
     const handleClear = () => {
