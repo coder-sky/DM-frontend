@@ -726,7 +726,7 @@ function ReportDetails() {
                                     rowsPerPageOptions={[10, 25, 50, 100, 300, 500]} tableStyle={{ maxWidth: '150rem' }} scrollHeight='350px' scrollable>
                                     {
                                         reportData.columns.map((col, index) => (
-                                            <Column key={index} headerStyle={{ backgroundColor: '#00A4CC', color: '#ffffff' }} sortable align={'center'} field={col.field} header={col.header}></Column>
+                                            col.header!=='CITY'&&col.header!=='STATE'&&col.header!=='SESSIONS' &&col.header!=='CPS' &&col.header!=='TOTAL CPS' && <Column key={index} headerStyle={{ backgroundColor: '#00A4CC', color: '#ffffff' }} sortable align={'center'} field={col.field} header={col.header}></Column>
                                         ))
                                     }
                                     {
